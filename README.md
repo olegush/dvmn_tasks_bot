@@ -1,20 +1,20 @@
 # Devman tasks bot
 
 This bot sends to Telegram messages about  checked lessons on
-(Devman online-course for web-developers)[https://dvmn.org/modules/].
+[Devman online-course for web-developers](https://dvmn.org/modules/).
 Based on Devman API, Log Polling and Telegram bots possibilities.
 
 ## How to install
 
-1. Python 3 and libraries from **requirements.txt** should be installed
+1. Python 3 and libraries from **requirements.txt** should be installed.
 
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Create dvmn.org account and get Devman API token
+2. Create dvmn.org account and get authorization token API.
 
-3. Create new Telegram bot, get token and your ID
+3. Create new Telegram bot, get token and your ID.
 
 4. Put all necessary parameters to .env file.
 
