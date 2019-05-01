@@ -28,6 +28,9 @@ CHAT_ID=chat_id
 
 Run **main.py** and wait for checking a task.
 
+```bash
+python main.py
+```
 
 ## Project Goals
 
