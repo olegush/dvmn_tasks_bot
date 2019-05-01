@@ -20,11 +20,15 @@ def devman_bot(urls, statuses, tokens, chat_id):
         try:
             payload = {'timestamp': timestamp}
             resp = requests.get(urls['polling'], headers=headers, params=payload)
-            json_data = resp.json()
+            if not resp.ok:
+                time.sleep(delay_to_next_connect)
+                continue
 
+            json_data = resp.json()
             if json_data['status'] == 'timeout':
                 timestamp = json_data['timestamp_to_request']
                 continue
+
             timestamp = json_data['last_attempt_timestamp']
 
             for attempt in json_data['new_attempts']:
