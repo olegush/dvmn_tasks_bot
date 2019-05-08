@@ -20,11 +20,13 @@ def devman_bot(urls, statuses, tokens, chat_id):
         try:
             payload = {'timestamp': timestamp}
             resp = requests.get(urls['polling'], headers=headers, params=payload)
-            if not resp.ok:
-                time.sleep(delay_to_next_connect)
-                continue
+            resp.raise_for_status()
 
             json_data = resp.json()
+
+            if 'error' in json_data:
+                raise requests.exceptions.HTTPError(json_data['error'])
+
             if json_data['status'] == 'timeout':
                 timestamp = json_data['timestamp_to_request']
                 continue
@@ -48,6 +50,10 @@ def devman_bot(urls, statuses, tokens, chat_id):
 
         except requests.exceptions.Timeout:
             continue
+
+        except requests.exceptions.HTTPError as error:
+            print(error)
+            break
 
         except requests.exceptions.ConnectionError:
             time.sleep(delay_to_next_connect)
