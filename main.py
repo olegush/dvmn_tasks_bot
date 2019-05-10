@@ -1,6 +1,8 @@
 import os
-from dotenv import load_dotenv
 import time
+import logging
+
+from dotenv import load_dotenv
 import requests
 import telegram
 
@@ -13,7 +15,9 @@ def devman_bot(urls, statuses, tokens, chat_id):
     delay_to_next_connect = 60
     headers = {'Authorization': 'Token {}'.format(tokens['dvmn'])}
     bot = telegram.Bot(token=tokens['tel'])
+    logging.warning('Bot running')
     timestamp = time.time()
+
 
     while True:
 
