@@ -43,38 +43,21 @@ def devman_bot(urls, statuses, tokens, chat_id):
             resp.raise_for_status()
 
             json_data = resp.json()
-
             if 'error' in json_data:
                 raise requests.exceptions.HTTPError(json_data['error'])
-
             if json_data['status'] == 'timeout':
                 timestamp = json_data['timestamp_to_request']
                 continue
 
             timestamp = json_data['last_attempt_timestamp']
 
-
             for attempt in json_data['new_attempts']:
-                msg = 'Урок <a href="{1}{2}">"{0}"</a> проверен преподавателем. {3}'.format(
+                msg = 'Урок <a href="{1}{2}">"{0}"</a> проверен. {3}'.format(
                                         attempt['lesson_title'],
                                         urls['indexpage'],
                                         attempt['lesson_url'],
-                                        statuses[attempt['is_negative']]
-                                        )
-                '''bot.send_message(
-                    chat_id=chat_id,
-                    text=msg,
-                    parse_mode='HTML',
-                    disable_web_page_preview=True
-                    )'''
+                                        statuses[attempt['is_negative']])
                 logger.warning(msg)
-            x = 0
-            y = 0
-            z = x/y
-
-        except ZeroDivisionError as err:
-            logger.warning(err, exc_info=True)
-            continue
 
         except requests.exceptions.Timeout as err:
             logger.warning(err, exc_info=True)
@@ -96,10 +79,11 @@ if __name__ == '__main__':
         'indexpage': 'https://dvmn.org',
         'polling': 'https://dvmn.org/api/long_polling/'
         }
+
     statuses = {
         False: 'Работа принята!',
         True: 'Нужны доработки.',
-        'bot_ran': 'Bot is running'}
+        'bot_ran': 'Бот запущен.'}
 
     load_dotenv()
     tokens = {'dvmn': os.environ['TOKEN_DVMN'], 'tel': os.environ['TOKEN_TEL']}
