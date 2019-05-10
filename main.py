@@ -69,7 +69,7 @@ if __name__ == '__main__':
     statuses = {True: 'Работа принята!', False: 'Нужны доработки.'}
 
     load_dotenv()
-    tokens = {'dvmn': os.environ('TOKEN_DVMN'), 'tel': os.environ('TOKEN_TEL')}
-    chat_id = os.environ('CHAT_ID')
+    tokens = {'dvmn': os.environ['TOKEN_DVMN'], 'tel': os.environ['TOKEN_TEL']}
+    chat_id = os.environ['CHAT_ID']
 
     devman_bot(urls_dvmn, statuses, tokens, chat_id)
