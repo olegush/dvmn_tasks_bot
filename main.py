@@ -69,7 +69,7 @@ def devman_bot(urls, statuses, tokens, chat_id):
                     )'''
                 logger.warning(msg)
 
-        a = 1 / 0
+        0 / 0
 
         except ZeroDivisionError:
             logger.warning(statuses['zero'], exc_info=True)
