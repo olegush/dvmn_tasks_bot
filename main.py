@@ -26,7 +26,7 @@ def devman_bot(urls, statuses, tokens, chat_id):
 
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
-    logger.addHandler(LoggerTelegramBot(bot, chat_id))
+    logger.addHandler(LoggerTelegramBot())
     logger.info('Bot is running')
 
     timestamp = time.time()
