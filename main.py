@@ -102,7 +102,7 @@ if __name__ == '__main__':
         'conn_err': 'Connection Error!',
         'http_err': 'HTTP Error!',
         'timeout_err': 'Timeout Error',
-        'zero', 'division by zero!'}
+        'zero': 'division by zero!'}
 
     load_dotenv()
     tokens = {'dvmn': os.environ['TOKEN_DVMN'], 'tel': os.environ['TOKEN_TEL']}
