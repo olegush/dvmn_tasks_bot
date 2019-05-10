@@ -68,10 +68,12 @@ def devman_bot(urls, statuses, tokens, chat_id):
                     disable_web_page_preview=True
                     )'''
                 logger.warning(msg)
+            x = 0
+            y = 0
+            z = x/y
 
         except ZeroDivisionError as err:
             logger.warning(err, exc_info=True)
-            raise
             continue
 
         except requests.exceptions.Timeout as err:
