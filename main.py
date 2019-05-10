@@ -7,48 +7,29 @@ import requests
 import telegram
 
 
-class LoggerTelegramBot(logging.Handler):
-        """ Sends formatted logs to Telegram Bot."""
+def devman_bot(urls, statuses, tokens, chat_id):
+    """ Requests to dvmn.org API, gets data about checked lessons
+    and sends messages to Telegram bot.
+    """
 
+    class LoggerTelegramBot(logging.Handler):
+        """ Sends formatted logs to Telegram Bot."""
         def emit(self, record):
             formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
             self.setFormatter(formatter)
             log_entry = self.format(record)
-            bot.send_message(
-                chat_id=chat_id,
-                text=log_entry,
-                parse_mode='HTML',
-                disable_web_page_preview=True
-                )
-
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
-    logger.addHandler(LoggerTelegramBot())
-    logger.info(time.time())
-
-
-
-
-def devman_bot(urls, statuses, tokens, chat_id):
-    """Requests to dvmn.org API, gets data about checked lessons
-    and sends messages to Telegram bot.
-    """
+            bot.send_message(chat_id=chat_id, text=log_entry)
 
     delay_to_next_connect = 60
     headers = {'Authorization': 'Token {}'.format(tokens['dvmn'])}
     bot = telegram.Bot(token=tokens['tel'])
-    logging.warning('Bot running')
+
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+    logger.addHandler(LoggerTelegramBot(bot, chat_id))
+    logger.info('Bot is running')
+
     timestamp = time.time()
-
-
-    bot.send_message(
-        chat_id=chat_id,
-        text=logger.info(),
-        parse_mode='HTML',
-        disable_web_page_preview=True
-        )
-
-
 
     while True:
 
