@@ -34,8 +34,7 @@ def devman_bot(urls, statuses, tokens, chat_id):
             timestamp = json_data['last_attempt_timestamp']
 
             for attempt in json_data['new_attempts']:
-                msg = 'Урок <a href="{1}{2}">"{0}"</a>'
-                'проверен преподавателем. {3}'.format(
+                msg = 'Урок <a href="{1}{2}">"{0}"</a> проверен преподавателем. {3}'.format(
                                         attempt['lesson_title'],
                                         urls['indexpage'],
                                         attempt['lesson_url'],
