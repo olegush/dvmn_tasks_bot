@@ -69,23 +69,22 @@ def devman_bot(urls, statuses, tokens, chat_id):
                     )'''
                 logger.warning(msg)
 
-        0 / 0
-
-        except ZeroDivisionError:
-            logger.warning(statuses['zero'], exc_info=True)
+        except ZeroDivisionError as err:
+            logger.warning(err, exc_info=True)
+            raise
             continue
 
-        except requests.exceptions.Timeout:
-            logger.warning(statuses['timeout_err'], exc_info=True)
+        except requests.exceptions.Timeout as err:
+            logger.warning(err, exc_info=True)
             continue
 
-        except requests.exceptions.HTTPError as error:
-            logger.critical(statuses['http_err'], exc_info=True)
+        except requests.exceptions.HTTPError as err:
+            logger.critical(err, exc_info=True)
             break
 
-        except requests.exceptions.ConnectionError:
+        except requests.exceptions.ConnectionError as err:
             time.sleep(delay_to_next_connect)
-            logger.warning(statuses['conn_err'], exc_info=True)
+            logger.warning(err, exc_info=True)
             continue
 
 
@@ -98,11 +97,7 @@ if __name__ == '__main__':
     statuses = {
         False: 'Работа принята!',
         True: 'Нужны доработки.',
-        'bot_ran': 'Bot is running',
-        'conn_err': 'Connection Error!',
-        'http_err': 'HTTP Error!',
-        'timeout_err': 'Timeout Error',
-        'zero': 'division by zero!'}
+        'bot_ran': 'Bot is running'}
 
     load_dotenv()
     tokens = {'dvmn': os.environ['TOKEN_DVMN'], 'tel': os.environ['TOKEN_TEL']}
