@@ -15,10 +15,14 @@ def devman_bot(urls, statuses, tokens, chat_id):
     class LoggerTelegramBot(logging.Handler):
         """ Sends formatted logs to Telegram Bot."""
         def emit(self, record):
-            formatter = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+            formatter = logging.Formatter('%(levelname)s - %(message)s')
             self.setFormatter(formatter)
             log_entry = self.format(record)
-            bot.send_message(chat_id=chat_id, text=log_entry)
+            bot.send_message(
+                chat_id=chat_id,
+                text=log_entry,
+                parse_mode='HTML',
+                disable_web_page_preview=True)
 
     delay_to_next_connect = 60
     headers = {'Authorization': 'Token {}'.format(tokens['dvmn'])}
@@ -27,7 +31,7 @@ def devman_bot(urls, statuses, tokens, chat_id):
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
     logger.addHandler(LoggerTelegramBot())
-    logger.info('Bot is running')
+    logger.info(statuses['started'])
 
     timestamp = time.time()
 
@@ -49,6 +53,7 @@ def devman_bot(urls, statuses, tokens, chat_id):
 
             timestamp = json_data['last_attempt_timestamp']
 
+
             for attempt in json_data['new_attempts']:
                 msg = 'Урок <a href="{1}{2}">"{0}"</a> проверен преподавателем. {3}'.format(
                                         attempt['lesson_title'],
@@ -56,22 +61,25 @@ def devman_bot(urls, statuses, tokens, chat_id):
                                         attempt['lesson_url'],
                                         statuses[attempt['is_negative']]
                                         )
-                bot.send_message(
+                '''bot.send_message(
                     chat_id=chat_id,
                     text=msg,
                     parse_mode='HTML',
                     disable_web_page_preview=True
-                    )
+                    )'''
+                logger.warning(msg)
 
         except requests.exceptions.Timeout:
+            logger.warning(tatuses['timeout_err'])
             continue
 
         except requests.exceptions.HTTPError as error:
-            print(error)
+            logger.critical(tatuses['http_err'])
             break
 
         except requests.exceptions.ConnectionError:
             time.sleep(delay_to_next_connect)
+            logger.warning(tatuses['conn_err'])
             continue
 
 
@@ -81,7 +89,13 @@ if __name__ == '__main__':
         'indexpage': 'https://dvmn.org',
         'polling': 'https://dvmn.org/api/long_polling/'
         }
-    statuses = {False: 'Работа принята!', True: 'Нужны доработки.'}
+    statuses = {
+        False: 'Работа принята!',
+        True: 'Нужны доработки.',
+        'started': 'Bot is running',
+        'conn_err': 'Connection Error!',
+        'http_err': 'HTTP Error!',
+        'timeout_err': 'Timeout Error'}
 
     load_dotenv()
     tokens = {'dvmn': os.environ['TOKEN_DVMN'], 'tel': os.environ['TOKEN_TEL']}
