@@ -31,7 +31,7 @@ def devman_bot(urls, statuses, tokens, chat_id):
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
     logger.addHandler(LoggerTelegramBot())
-    logger.info(statuses['started'])
+    logger.info(statuses['bot_ran'])
 
     timestamp = time.time()
 
@@ -69,17 +69,23 @@ def devman_bot(urls, statuses, tokens, chat_id):
                     )'''
                 logger.warning(msg)
 
+        a = 1 / 0
+
+        except ZeroDivisionError:
+            logger.warning(statuses['zero'], exc_info=True)
+            continue
+
         except requests.exceptions.Timeout:
-            logger.warning(tatuses['timeout_err'])
+            logger.warning(statuses['timeout_err'], exc_info=True)
             continue
 
         except requests.exceptions.HTTPError as error:
-            logger.critical(tatuses['http_err'])
+            logger.critical(statuses['http_err'], exc_info=True)
             break
 
         except requests.exceptions.ConnectionError:
             time.sleep(delay_to_next_connect)
-            logger.warning(tatuses['conn_err'])
+            logger.warning(statuses['conn_err'], exc_info=True)
             continue
 
 
@@ -92,10 +98,11 @@ if __name__ == '__main__':
     statuses = {
         False: 'Работа принята!',
         True: 'Нужны доработки.',
-        'started': 'Bot is running',
+        'bot_ran': 'Bot is running',
         'conn_err': 'Connection Error!',
         'http_err': 'HTTP Error!',
-        'timeout_err': 'Timeout Error'}
+        'timeout_err': 'Timeout Error',
+        'zero', 'division by zero!'}
 
     load_dotenv()
     tokens = {'dvmn': os.environ['TOKEN_DVMN'], 'tel': os.environ['TOKEN_TEL']}
