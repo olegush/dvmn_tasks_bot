@@ -65,7 +65,7 @@ if __name__ == '__main__':
         'indexpage': 'https://dvmn.org',
         'polling': 'https://dvmn.org/api/long_polling/'
         }
-    statuses = {True: 'Работа принята!', False: 'Нужны доработки.'}
+    statuses = {False: 'Работа принята!', True: 'Нужны доработки.'}
 
     load_dotenv()
     tokens = {'dvmn': os.environ['TOKEN_DVMN'], 'tel': os.environ['TOKEN_TEL']}
