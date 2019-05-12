@@ -7,16 +7,17 @@ import requests
 import telegram
 
 
-def devman_bot(urls, statuses, tokens, chat_id):
+def send_notifications_to_telegram(urls, statuses, tokens, chat_id):
     """ Requests to dvmn.org API, gets data about checked lessons
-    and sends messages to Telegram bot.
+    and sends notifications to Telegram bot.
     """
 
     class LoggerTelegramBot(logging.Handler):
         """ Sends formatted logs to Telegram Bot."""
+
         def emit(self, record):
-            formatter = logging.Formatter('%(levelname)s - %(message)s')
-            self.setFormatter(formatter)
+            #formatter = logging.Formatter('%(levelname)s - %(message)s')
+            #self.setFormatter(formatter)
             log_entry = self.format(record)
             bot.send_message(
                 chat_id=chat_id,
@@ -29,6 +30,8 @@ def devman_bot(urls, statuses, tokens, chat_id):
     bot = telegram.Bot(token=tokens['tel'])
 
     logger = logging.getLogger()
+    formatter = logging.Formatter('%(levelname)s - %(message)s')
+    logger.setFormatter(formatter)
     logger.setLevel(logging.INFO)
     logger.addHandler(LoggerTelegramBot())
     logger.info(statuses['bot_ran'])
@@ -89,4 +92,4 @@ if __name__ == '__main__':
     tokens = {'dvmn': os.environ['TOKEN_DVMN'], 'tel': os.environ['TOKEN_TEL']}
     chat_id = os.environ['CHAT_ID']
 
-    devman_bot(urls_dvmn, statuses, tokens, chat_id)
+    send_notifications_to_telegram(urls_dvmn, statuses, tokens, chat_id)
