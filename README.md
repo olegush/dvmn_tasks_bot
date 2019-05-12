@@ -36,7 +36,7 @@ about **requirements.txt** and **Procfile**.
 
 2. Add your environment variables to Settings > Config Vars section.
 
-3. For reading logs install (Heroku CLI)[https://devcenter.heroku.com/articles/heroku-cli#download-and-install].
+3. For reading logs install [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli#download-and-install).
 
 
 ## Quickstart

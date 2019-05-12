@@ -16,8 +16,6 @@ def send_notifications_to_telegram(urls, statuses, tokens, chat_id):
         """ Sends formatted logs to Telegram Bot."""
 
         def emit(self, record):
-            #formatter = logging.Formatter('%(levelname)s - %(message)s')
-            #self.setFormatter(formatter)
             log_entry = self.format(record)
             bot.send_message(
                 chat_id=chat_id,
@@ -31,9 +29,8 @@ def send_notifications_to_telegram(urls, statuses, tokens, chat_id):
 
     logger = logging.getLogger()
     formatter = logging.Formatter('%(levelname)s - %(message)s')
-    logger.setFormatter(formatter)
     logger.setLevel(logging.INFO)
-    logger.addHandler(LoggerTelegramBot())
+    logger.addHandler(LoggerTelegramBot().setFormatter(formatter))
     logger.info(statuses['bot_ran'])
 
     timestamp = time.time()
